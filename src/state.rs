@@ -1,5 +1,6 @@
 use sqlx::PgPool;
 
+#[derive(Clone)]
 pub struct AppState {
-    pub state: PgPool,
+    pub pool: PgPool,
 }

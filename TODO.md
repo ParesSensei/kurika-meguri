@@ -21,8 +21,8 @@ Define the data and populate the initial hiragana dataset.
 - [x] Design hiragana table  
 - [x] Create migration  
 - [x] Insert 46 basic hiragana  
-- [ ] Create Hiragana Rust model  
-- [ ] Create repository/query for retrieving hiragana  
+- [x] Create Hiragana Rust model  
+- [x] Create repository/query for retrieving hiragana  
 - [ ] Test database query  
 - [ ] Create endpoint list hiragana  
 
