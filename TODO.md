@@ -14,7 +14,7 @@ Todo Phase 0  Project Foundation
 - [ ] Setup error type  
 - [x] Setup health check endpoint  
 - [ ] Setup basic tracing/logging   
-- [ ] Create initial README 
+- [x] Create initial README 
 
 Todo Phase 1 Hiragana Data  
 Define the data and populate the initial hiragana dataset. 
