@@ -28,14 +28,14 @@ Define the data and populate the initial hiragana dataset.
 
 Todo Phase 2 Hiragana Learn  
 Build the initial learning interface for the 46 basic hiragana  
-- [ ] Create hiragana learning page  
-- [ ] Fetch data from API  
-- [ ] Display character  
-- [ ] Display romaji  
-- [ ] Navigation previous/next  
-- [ ] Progress indicator  
-- [ ] Display all 46 basic hiragana  
-- [ ] Responsive UI  
+- [x] Create hiragana learning page  
+- [x] Fetch data from API  
+- [x] Display character  
+- [x] Display romaji  
+- [x] Navigation previous/next  
+- [x] Progress indicator  
+- [x] Display all 46 basic hiragana  
+- [x] Responsive UI  
 
 Todo Phase 3 Practice Engine v0  
 - [ ] Design question model  

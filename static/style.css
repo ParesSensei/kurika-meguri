@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+main {
+    min-height: 100vh;
+}
+
+section {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+.learning-container {
+    width: 100%;
+    max-width: 500px;
+
+    background-color: white;
+    padding: 40px;
+
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    text-align: center;
+}
+
+#hiragana-card {
+    margin: 40px 0;
+}
+
+#character {
+    font-size: 120px;
+    margin: 0;
+}
+
+#romaji {
+    font-size: 32px;
+    margin: 20px 0 0;
+}
+
+button {
+    padding: 8px 16px;
+    cursor: pointer;
+}

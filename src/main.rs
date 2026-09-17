@@ -10,6 +10,7 @@ use crate::handlers::health::health_check;
 use crate::routes::hiragana::hiragana_routes;
 use crate::state::AppState;
 use sqlx::PgPool;
+use tower_http::services::ServeDir;
 
 use axum::{
     routing::get,
@@ -20,6 +21,7 @@ use axum::{
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
+    let static_file = ServeDir::new("static");
 
     dotenvy::dotenv().ok();
     let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
@@ -33,9 +35,10 @@ async fn main() {
     };
 
     let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
+        // .route("/", get(|| async { "Hello, World!" }))
         .route("/health", get(health_check))
         .nest("/api/hiragana", hiragana_routes())
+        .fallback_service(static_file)
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
