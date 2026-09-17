@@ -9,11 +9,11 @@ Todo Phase 0  Project Foundation
 - [x] Setup SQLx 
 - [x] Setup PostgreSQL  
 - [x] Setup .env  
-- [ ] Setup config loader  
+- [x] Setup config loader  
 - [x] Setup application state  
 - [ ] Setup error type  
 - [x] Setup health check endpoint  
-- [ ] Setup basic tracing/logging   
+- [x] Setup basic tracing/logging   
 - [x] Create initial README 
 
 Todo Phase 1 Hiragana Data  
@@ -23,8 +23,8 @@ Define the data and populate the initial hiragana dataset.
 - [x] Insert 46 basic hiragana  
 - [x] Create Hiragana Rust model  
 - [x] Create repository/query for retrieving hiragana  
-- [ ] Test database query  
-- [ ] Create endpoint list hiragana  
+- [x] Test database query  
+- [x] Create endpoint list hiragana  
 
 Todo Phase 2 Hiragana Learn  
 Build the initial learning interface for the 46 basic hiragana  
