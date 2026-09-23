@@ -19,3 +19,38 @@ pub struct Hiragana {
 // )
 // .fetch_one(&pool)
 // .await?;
+
+pub enum QuestionType {
+    HiraganaToRomaji,
+    RomajiToHiragana,
+}
+
+pub struct QuestionResponse {
+    pub id : u32,
+    pub question : String,
+    pub option: Vec<String>,
+}
+
+pub struct Question {
+    pub id: u32,
+    pub character: String,
+    pub romaji: String,
+    pub question_type: QuestionType,
+    pub option: Vec<String>,
+    pub correct_answer: String,
+}
+
+#[test]
+fn test_question() {
+    let question = Question{
+        id: 1,
+        character: "あ".to_string(),
+        romaji: "a".to_string(),
+        question_type: QuestionType::HiraganaToRomaji,
+        option: vec!["a".to_string(),"b".to_string(),"c".to_string(),"d".to_string()],
+        correct_answer: "a".to_string(),
+    };
+
+    let q1 = println!("what the correct answer of this question? {} {}", question.id, question.correct_answer);
+    q1
+}
