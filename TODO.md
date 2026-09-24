@@ -38,9 +38,9 @@ Build the initial learning interface for the 46 basic hiragana
 - [x] Responsive UI  
 
 Todo Phase 3 Practice Engine v0  
-- [ ] Design question model  
-- [ ] Random question selection  
-- [ ] Generate answer options  
+- [x] Design question model  
+- [x] Random question selection  
+- [x] Generate answer options  
 - [ ] Prevent duplicate options  
 - [ ] Evaluate answer  
 - [ ] Return correct/incorrect  

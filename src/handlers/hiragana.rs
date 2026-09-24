@@ -1,13 +1,7 @@
-use axum::{
-    extract::State,
-    http::StatusCode,
-    Json,
-};
-use tracing::{event, info, Level};
-use crate::{
-    models::hiragana::Hiragana,
-    state::AppState,
-};
+use crate::models::hiragana::{Question, QuestionType};
+use crate::{models::hiragana::Hiragana, state::AppState};
+use axum::{Json, extract::State, http::StatusCode};
+use tracing::{Level, event, info};
 
 pub async fn get_all_hiragana_handler(
     State(state): State<AppState>,
@@ -16,13 +10,11 @@ pub async fn get_all_hiragana_handler(
     let hiragana = sqlx::query_as::<_, Hiragana>(
         "SELECT id, character, romaji, row_group
          FROM hiragana
-         ORDER BY id ASC"
+         ORDER BY id ASC",
     )
-        .fetch_all(&state.pool)
-        .await
-        .map_err(|e| {
-            (StatusCode::INTERNAL_SERVER_ERROR, e.to_string())
-        })?;
+    .fetch_all(&state.pool)
+    .await
+    .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
     Ok(Json(hiragana))
 }
@@ -38,12 +30,96 @@ pub async fn get_random_hiragana_handler(
         "SELECT id, character, romaji, row_group from hiragana WHERE id = $1",
         ran_id
     )
-        .fetch_one(&state.pool)
-        .await;
+    .fetch_one(&state.pool)
+    .await;
 
     let result = match hiragana {
         Ok(hiragana) => Ok(Json(hiragana)),
-        Err(eror) => Err((StatusCode::INTERNAL_SERVER_ERROR, eror.to_string()))
+        Err(eror) => Err((StatusCode::INTERNAL_SERVER_ERROR, eror.to_string())),
     };
     result
 }
+
+pub async fn create_question(State(state): State<AppState>) -> Question {
+    let ran_id = rand::random_range(1..=46);
+
+    let hiragana = sqlx::query_as!(
+        Hiragana,
+        "select id, character, romaji, row_group from hiragana where id = $1",
+        ran_id
+    )
+    .fetch_one(&state.pool)
+    .await
+    .unwrap();
+
+    let option = sqlx::query_as!(
+        Hiragana,
+        "select id, character, romaji, row_group From hiragana where row_group = $1",
+        hiragana.row_group
+    )
+    .fetch_all(&state.pool)
+    .await
+    .unwrap();
+
+    let options_romaji = option.clone()
+        .into_iter()
+        .map(|h| h.romaji)
+        .collect();
+
+    let option_hiragana: Vec<String> = option
+        .into_iter()
+        .map(|h| h.character)
+        .collect();
+
+    let hiragana_result = Question {
+        id: hiragana.id,
+        character: hiragana.character.clone(),
+        romaji: hiragana.romaji.clone(),
+        question_type: QuestionType::RomajiToHiragana,
+        option: option_hiragana,
+        correct_answer: hiragana.character.clone()
+    };
+
+    let romaji_result = Question {
+        id: hiragana.id,
+        character: hiragana.character.clone(),
+        romaji: hiragana.romaji.clone(),
+        question_type: QuestionType::HiraganaToRomaji,
+        option: options_romaji,
+        correct_answer: hiragana.romaji,
+    };
+
+    let question_type = QuestionType::random();
+    match question_type {
+        QuestionType::HiraganaToRomaji => {
+            hiragana_result
+        }
+        QuestionType::RomajiToHiragana => {
+            romaji_result
+        }
+    }
+}
+
+#[tokio::test]
+async fn question1() {
+    dotenvy::dotenv().ok();
+
+    let db_url = std::env::var("DATABASE_URL").unwrap();
+
+    let pool = sqlx::PgPool::connect(&db_url)
+        .await
+        .unwrap();
+
+    let state = AppState { pool };
+
+    let question = create_question(State(state)).await;
+
+    println!("{:#?}", question);
+}
+
+// pub id: u32,
+// pub character: String,
+// pub romaji: String,
+// pub question_type: QuestionType,
+// pub option: Vec<String>,
+// pub correct_answer: String,

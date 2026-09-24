@@ -1,10 +1,10 @@
 mod config;
 mod error;
-mod state;
 mod handlers;
 mod models;
 mod routes;
 mod services;
+mod state;
 
 use crate::handlers::health::health_check;
 use crate::routes::hiragana::hiragana_routes;
@@ -12,11 +12,7 @@ use crate::state::AppState;
 use sqlx::PgPool;
 use tower_http::services::ServeDir;
 
-use axum::{
-    routing::get,
-    Router,
-};
-
+use axum::{Router, routing::get};
 
 #[tokio::main]
 async fn main() {
@@ -30,9 +26,7 @@ async fn main() {
         .await
         .expect("Failed to create postgres database pool");
 
-    let state = AppState {
-        pool
-    };
+    let state = AppState { pool };
 
     let app = Router::new()
         // .route("/", get(|| async { "Hello, World!" }))
