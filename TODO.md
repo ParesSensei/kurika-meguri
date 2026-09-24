@@ -41,15 +41,15 @@ Todo Phase 3 Practice Engine v0
 - [x] Design question model  
 - [x] Random question selection  
 - [x] Generate answer options  
-- [ ] Prevent duplicate options  
-- [ ] Evaluate answer  
-- [ ] Return correct/incorrect  
-- [ ] Frontend practice screen  
-- [ ] Answer buttons  
-- [ ] Correct feedback  
-- [ ] Incorrect feedback  
-- [ ] Next question  
-- [ ] Session score  
+- [x] Prevent duplicate options  
+- [x] Evaluate answer  
+- [x] Return correct/incorrect  
+- [x] Frontend practice screen  
+- [x] Answer buttons  
+- [x] Correct feedback  
+- [x] Incorrect feedback  
+- [x] Next question  
+- [x] Session score  
 
 Todo Phase 4 Practice Session  
 - [ ] Practice session state  

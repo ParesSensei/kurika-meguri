@@ -30,7 +30,8 @@ impl QuestionType {
 // .fetch_one(&pool)
 // .await?;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, Serialize)]
+#[serde(rename_all = "snake_case")]
 pub enum QuestionType {
     HiraganaToRomaji,
     RomajiToHiragana,
@@ -43,7 +44,7 @@ pub struct QuestionResponse {
     pub option: Vec<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Question {
     pub id: i32,
     pub character: String,

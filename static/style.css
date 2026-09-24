@@ -53,3 +53,56 @@ button {
     padding: 8px 16px;
     cursor: pointer;
 }
+
+
+#practice-card {
+    margin: 40px 0;
+}
+
+#question {
+    font-size: 120px;
+    margin: 0;
+}
+
+#question-text {
+    font-size: 20px;
+    margin: 30px 0 0;
+}
+
+#options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+#options button {
+    padding: 14px;
+    font-size: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+#options button:hover {
+    background-color: #f5f5f5;
+}
+
+#feedback {
+    min-height: 24px;
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+#practice-navigation {
+    margin-top: 25px;
+}
+
+#next {
+    margin-left: 15px;
+}
+
+.result-title {
+    font-size: 42px !important;
+    margin: 30px 0;
+}

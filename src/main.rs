@@ -13,6 +13,7 @@ use sqlx::PgPool;
 use tower_http::services::ServeDir;
 
 use axum::{Router, routing::get};
+use crate::handlers::hiragana::get_practice_question_handler;
 
 #[tokio::main]
 async fn main() {
@@ -32,6 +33,7 @@ async fn main() {
         // .route("/", get(|| async { "Hello, World!" }))
         .route("/health", get(health_check))
         .nest("/api/hiragana", hiragana_routes())
+        .route("/api/practice/question", get(get_practice_question_handler))
         .fallback_service(static_file)
         .with_state(state);
 

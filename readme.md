@@ -6,6 +6,7 @@
 [![Axum](https://img.shields.io/badge/Axum-000000?style=flat-square&logo=rust&logoColor=white)](https://github.com/tokio-rs/axum)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![SQLx](https://img.shields.io/badge/SQLx-000000?style=flat-square&logo=rust&logoColor=white)](https://github.com/launchbadge/sqlx)
+[![Tracing](https://img.shields.io/badge/Tracing-000000?style=flat-square&logo=rust&logoColor=white)](https://github.com/tokio-rs/tracing)
 [![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)]()
 </div>
 

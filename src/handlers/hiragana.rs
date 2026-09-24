@@ -41,6 +41,7 @@ pub async fn get_random_hiragana_handler(
 }
 
 pub async fn create_question(State(state): State<AppState>) -> Question {
+    event!(Level::INFO, "created question");
     let ran_id = rand::random_range(1..=46);
 
     let hiragana = sqlx::query_as!(
@@ -92,16 +93,32 @@ pub async fn create_question(State(state): State<AppState>) -> Question {
     let question_type = QuestionType::random();
     match question_type {
         QuestionType::HiraganaToRomaji => {
-            hiragana_result
+            event!(Level::INFO, "question type HiraganaToRomaji");
+            romaji_result
         }
         QuestionType::RomajiToHiragana => {
-            romaji_result
+            event!(Level::INFO, "question type RomajiToHiragana");
+            hiragana_result
         }
     }
 }
 
+pub async fn get_practice_question_handler(
+    State(state): State<AppState>,
+) -> Json<Question> {
+    let question = create_question(State(state)).await;
+
+    Json(question)
+}
+
+fn evaluate_answer(question: &Question, answer: String) -> bool {
+    event!(Level::INFO, "evaluating answer");
+    answer == question.correct_answer
+}
+
 #[tokio::test]
 async fn question1() {
+    tracing_subscriber::fmt::init();
     dotenvy::dotenv().ok();
 
     let db_url = std::env::var("DATABASE_URL").unwrap();
@@ -113,8 +130,9 @@ async fn question1() {
     let state = AppState { pool };
 
     let question = create_question(State(state)).await;
-
-    println!("{:#?}", question);
+    let answer = "ne".to_string();
+    let result = evaluate_answer(&question, answer);
+    println!("{:#?} {}", question, result);
 }
 
 // pub id: u32,
