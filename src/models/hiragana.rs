@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
 #[derive(Serialize, FromRow, Debug, Clone)]
@@ -7,16 +7,6 @@ pub struct Hiragana {
     pub character: String,
     pub romaji: String,
     pub row_group: String,
-}
-
-impl QuestionType {
-    pub fn random() -> Self {
-        if rand::random_range(0..2) == 0 {
-            Self::HiraganaToRomaji
-        } else {
-            Self::RomajiToHiragana
-        }
-    }
 }
 
 // Contoh menggunakan PostgreSQL ($1) dan makro query_as!
@@ -35,6 +25,39 @@ impl QuestionType {
 pub enum QuestionType {
     HiraganaToRomaji,
     RomajiToHiragana,
+}
+
+impl QuestionType {
+    pub fn random() -> Self {
+        if rand::random_range(0..2) == 0 {
+            Self::HiraganaToRomaji
+        } else {
+            Self::RomajiToHiragana
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PracticeMode {
+    HiraganaToRomaji,
+    RomajiToHiragana,
+    Mixed,
+}
+
+impl PracticeMode {
+    pub fn question_type(&self) -> QuestionType {
+        match self {
+            Self::HiraganaToRomaji => QuestionType::HiraganaToRomaji,
+            Self::RomajiToHiragana => QuestionType::RomajiToHiragana,
+            Self::Mixed => QuestionType::random(),
+        }
+    }
+}
+
+#[derive(Deserialize)]
+pub struct PracticeQuery {
+    pub mode: Option<PracticeMode>,
 }
 
 #[derive(Serialize)]

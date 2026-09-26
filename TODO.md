@@ -52,19 +52,19 @@ Todo Phase 3 Practice Engine v0
 - [x] Session score  
 
 Todo Phase 4 Practice Session  
-- [ ] Practice session state  
-- [ ] 10 questions/session  
-- [ ] Score calculation  
-- [ ] Correct answer count  
-- [ ] Incorrect answer count  
-- [ ] Completion screen  
-- [ ] Retry session  
-- [ ] New session  
+- [x] Practice session state  
+- [x] 10 questions/session  
+- [x] Score calculation  
+- [x] Correct answer count  
+- [x] Incorrect answer count  
+- [x] Completion screen  
+- [x] Retry session  
+- [x] New session  
 
 Todo Phase 5 Reverse Practice  
 - [ ] Reverse question generator  
 - [ ] Character options  
-- [ ] Answer evaluation  
+- [x] Answer evaluation  
 - [ ] Frontend reverse practice  
 - [ ] Practice mode selector  
 

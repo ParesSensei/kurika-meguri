@@ -10,6 +10,7 @@ const options = document.getElementById("options");
 const feedback = document.getElementById("feedback");
 const nextButton = document.getElementById("next");
 const progress = document.getElementById("progress");
+const practiceMode = document.getElementById("practice-mode");
 
 async function loadQuestion() {
     currentQuestionNumber++;
@@ -22,7 +23,9 @@ async function loadQuestion() {
         `${currentQuestionNumber} / ${totalQuestions}`;
 
     try {
-        const response = await fetch("/api/practice/question");
+        const mode = practiceMode.value;
+
+        const response = await fetch(`/api/practice/question?mode=${mode}`);
 
         if (!response.ok) {
             throw new Error("Failed to fetch question");
@@ -123,5 +126,16 @@ function restartPractice() {
 
     loadQuestion();
 }
+
+practiceMode.addEventListener("change", () => {
+    currentQuestionNumber = 0;
+    score = 0;
+
+    question.classList.remove("result-title");
+    nextButton.onclick = null;
+    nextButton.textContent = "Next";
+
+    loadQuestion();
+});
 
 loadQuestion();

@@ -1,6 +1,6 @@
-use crate::models::hiragana::{Question, QuestionType};
+use crate::models::hiragana::{PracticeMode, PracticeQuery, Question, QuestionType};
 use crate::{models::hiragana::Hiragana, state::AppState};
-use axum::{Json, extract::State, http::StatusCode};
+use axum::{Json, extract::Query, extract::State, http::StatusCode};
 use tracing::{Level, event, info};
 
 pub async fn get_all_hiragana_handler(
@@ -40,7 +40,7 @@ pub async fn get_random_hiragana_handler(
     result
 }
 
-pub async fn create_question(State(state): State<AppState>) -> Question {
+pub async fn create_question(State(state): State<AppState>, mode: PracticeMode) -> Question {
     event!(Level::INFO, "created question");
     let ran_id = rand::random_range(1..=46);
 
@@ -62,15 +62,9 @@ pub async fn create_question(State(state): State<AppState>) -> Question {
     .await
     .unwrap();
 
-    let options_romaji = option.clone()
-        .into_iter()
-        .map(|h| h.romaji)
-        .collect();
+    let options_romaji = option.clone().into_iter().map(|h| h.romaji).collect();
 
-    let option_hiragana: Vec<String> = option
-        .into_iter()
-        .map(|h| h.character)
-        .collect();
+    let option_hiragana: Vec<String> = option.into_iter().map(|h| h.character).collect();
 
     let hiragana_result = Question {
         id: hiragana.id,
@@ -78,7 +72,7 @@ pub async fn create_question(State(state): State<AppState>) -> Question {
         romaji: hiragana.romaji.clone(),
         question_type: QuestionType::RomajiToHiragana,
         option: option_hiragana,
-        correct_answer: hiragana.character.clone()
+        correct_answer: hiragana.character.clone(),
     };
 
     let romaji_result = Question {
@@ -90,7 +84,12 @@ pub async fn create_question(State(state): State<AppState>) -> Question {
         correct_answer: hiragana.romaji,
     };
 
-    let question_type = QuestionType::random();
+    let question_type = match mode {
+        PracticeMode::HiraganaToRomaji => QuestionType::HiraganaToRomaji,
+        PracticeMode::RomajiToHiragana => QuestionType::RomajiToHiragana,
+        PracticeMode::Mixed => QuestionType::random(),
+    };
+
     match question_type {
         QuestionType::HiraganaToRomaji => {
             event!(Level::INFO, "question type HiraganaToRomaji");
@@ -105,8 +104,11 @@ pub async fn create_question(State(state): State<AppState>) -> Question {
 
 pub async fn get_practice_question_handler(
     State(state): State<AppState>,
+    Query(query): Query<PracticeQuery>,
 ) -> Json<Question> {
-    let question = create_question(State(state)).await;
+    let mode = query.mode.unwrap_or(PracticeMode::Mixed);
+
+    let question = create_question(State(state), mode).await;
 
     Json(question)
 }
@@ -123,13 +125,31 @@ async fn question1() {
 
     let db_url = std::env::var("DATABASE_URL").unwrap();
 
-    let pool = sqlx::PgPool::connect(&db_url)
-        .await
-        .unwrap();
+    let pool = sqlx::PgPool::connect(&db_url).await.unwrap();
 
     let state = AppState { pool };
 
-    let question = create_question(State(state)).await;
+    let question = create_question(State(state.clone()), PracticeMode::RomajiToHiragana).await;
+    let answer = "ne".to_string();
+    let result = evaluate_answer(&question, answer);
+    println!("{:#?} {}", question, result);
+
+    let question = create_question(State(state.clone()), PracticeMode::HiraganaToRomaji).await;
+    let answer = "ne".to_string();
+    let result = evaluate_answer(&question, answer);
+    println!("{:#?} {}", question, result);
+
+    let question = create_question(State(state.clone()), PracticeMode::Mixed).await;
+    let answer = "ne".to_string();
+    let result = evaluate_answer(&question, answer);
+    println!("{:#?} {}", question, result);
+
+    let question = create_question(State(state.clone()), PracticeMode::Mixed).await;
+    let answer = "ne".to_string();
+    let result = evaluate_answer(&question, answer);
+    println!("{:#?} {}", question, result);
+
+    let question = create_question(State(state.clone()), PracticeMode::Mixed).await;
     let answer = "ne".to_string();
     let result = evaluate_answer(&question, answer);
     println!("{:#?} {}", question, result);

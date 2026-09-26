@@ -12,8 +12,8 @@ use crate::state::AppState;
 use sqlx::PgPool;
 use tower_http::services::ServeDir;
 
-use axum::{Router, routing::get};
 use crate::handlers::hiragana::get_practice_question_handler;
+use axum::{Router, routing::get};
 
 #[tokio::main]
 async fn main() {
@@ -30,7 +30,6 @@ async fn main() {
     let state = AppState { pool };
 
     let app = Router::new()
-        // .route("/", get(|| async { "Hello, World!" }))
         .route("/health", get(health_check))
         .nest("/api/hiragana", hiragana_routes())
         .route("/api/practice/question", get(get_practice_question_handler))

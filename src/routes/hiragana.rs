@@ -1,7 +1,9 @@
 use axum::{Router, routing::get};
 
 use crate::{
-    handlers::hiragana::{get_all_hiragana_handler, get_random_hiragana_handler, get_practice_question_handler},
+    handlers::hiragana::{
+        get_all_hiragana_handler, get_practice_question_handler, get_random_hiragana_handler,
+    },
     state::AppState,
 };
 
